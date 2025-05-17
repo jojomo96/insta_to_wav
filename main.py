@@ -5,6 +5,8 @@ from pathlib import Path
 
 from fastapi import FastAPI, HTTPException, BackgroundTasks, Body
 from fastapi.responses import FileResponse
+from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
 
 import transcribe
 
@@ -13,6 +15,14 @@ TEMP_DIR = Path("temp")
 TEMP_DIR.mkdir(exist_ok=True)
 
 app = FastAPI(title="Reel → WAV micro-service")
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"], # or a list of specific origins
+    allow_methods=["*"], # GET, POST, etc.
+    allow_headers=["*"], # e.g. Content-Type
+    expose_headers=["*"],
+)
 
 
 def cleanup_dir(path: Path) -> None:
